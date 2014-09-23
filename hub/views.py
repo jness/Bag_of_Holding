@@ -4,6 +4,7 @@ from hub.forms import ItemUpdateForm, ItemForm
 from django.template.defaultfilters import slugify
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -135,3 +136,23 @@ def mylogin(request):
 def mylogout(request):
     logout(request)
     return redirect('/')
+
+
+def change_password(request):
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    if request.method == 'POST':
+        user = request.user
+        password = request.POST['password']
+        password1 = request.POST['password1']
+
+        if password == password1:
+            user.set_password(password)
+            user.save()
+            return redirect('/profile/')
+        else:
+            return render(request, 'hub/change_password.html',
+                          dict(error='Passwords do not match'))
+
+    return render(request, 'hub/change_password.html', dict())
