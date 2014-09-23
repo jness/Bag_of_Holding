@@ -1,0 +1,36 @@
+{% extends "hub/base.html" %}
+
+{% block body %}
+   <h3><strong>Your Characters</strong>
+        <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#add-character-modal">
+          <span class="glyphicon glyphicon-plus"></span> Add New Character!
+        </button>
+   </h3>
+
+   {% for character in characters %}
+       <p><span class="glyphicon glyphicon-pushpin"></span> <a href="/character/{{ character.id }}/">{{ character.name }}</a></p>
+   {% endfor %}
+{% endblock %}
+
+{% block loot_modal %}
+<!-- Trash Loot Modal -->
+<div class="modal fade" id="add-character-modal" tabindex="-1" role="dialog" aria-labelledby="add-character-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/add_character/" method="post">
+            <div class="modal-body">
+                <p>
+                    <strong>Character Name</strong>:
+                    <span class="help-block">Who own's this Bag of Holding?</span>
+                    <input type="text" name="name" class="form-control">
+                </p>
+            </div>
+            <div class="modal-footer">
+                {% csrf_token %}
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Trash Loot!</button>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

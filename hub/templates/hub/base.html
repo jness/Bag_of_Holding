@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bag of Holding</title>
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/theme.css" rel="stylesheet">
+    </head>
+
+    <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+                <li>
+                    <a href="/profile/">Welcome {{ request.user }}</a>
+                </li>
+                <li><a href="/logout/"><small>[ Logout ]</small></a></li>
+            {% else %}
+                <li><a href="/login/">Login</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+        <div class="container">
+
+        <!-- Jumbotron -->
+        <div class="jumbotron">
+            <h1><strong>Bag of Holding</strong></h1>
+            <p class="lead">A universal loot tracker for all your role playing game needs.</p>
+
+            {% block loot_button %}
+            {% endblock %}
+        </div>
+
+
+        <!-- Item list -->
+        <div class="col-md-12">
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        <!-- /container -->
+        </div>
+
+        <!-- Javascript code -->
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.js"></script>
+
+        {% block loot_modal %}
+        {% endblock %}
+
+    </body>
+
+</html>
