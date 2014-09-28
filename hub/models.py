@@ -17,12 +17,21 @@ class Character(models.Model):
         return self.name
 
 
+class Slot(models.Model):
+    name = models.CharField(max_length=75)
+    character = models.ForeignKey(Character)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Item(models.Model):
     name = models.CharField(max_length=75)
     description = models.TextField()
     quantity = models.IntegerField()
     icon = models.ForeignKey(Icon)
     character = models.ForeignKey(Character)
+    slot = models.ForeignKey(Slot)
 
     class Meta:
         unique_together = ("name", "character")

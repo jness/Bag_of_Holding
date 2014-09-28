@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
-from hub.models import Icon, Item, Character
+from hub.models import Icon, Item, Character, Slot
 from hub.forms import ItemUpdateForm, ItemForm
 from django.template.defaultfilters import slugify
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
 
 
 def home(request):
@@ -25,7 +24,8 @@ def add_character(request):
 
     if request.method == 'POST':
         name = request.POST['name']
-        Character.objects.create(name=name, owner=request.user)
+        chara = Character.objects.create(name=name, owner=request.user)
+        Slot.objects.create(character=chara, name='Large Pocket')
 
     return redirect('/profile')
 
