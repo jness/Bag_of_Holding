@@ -1,7 +1,7 @@
 {% extends "hub/base.html" %}
 
 {% block loot_button %}
-<h3><small><strong>{{ character.name }}'s</strong> Inventory [{{ items|length }}]</small></h3><br>
+<h3><small>Items [{{ items|length }}]</small></h3><br>
 <p>
     {% if not readonly %}
     <button type="button" class="btn btn-default btn-ls" data-toggle="modal" data-target="#newItemModal">

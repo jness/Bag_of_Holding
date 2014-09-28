@@ -25,8 +25,9 @@ def add_character(request):
     if request.method == 'POST':
         name = request.POST['name']
         chara = Character.objects.create(name=name, owner=request.user)
-        Slot.objects.create(name='Inventory', character=chara)
-        Slot.objects.create(name='Spells Per Day', character=chara)
+        Slot.objects.create(name="%s's Inventory" % chara.name, character=chara)
+        Slot.objects.create(name="%s's Quest Items" % chara.name, character=chara)
+        Slot.objects.create(name="%s's Spells Per Day" % chara.name, character=chara)
 
     return redirect('/profile')
 
