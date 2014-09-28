@@ -30,8 +30,14 @@
         <input type="number" name="quantity" class="form-control">
         </p>
         <p><strong>Description</strong>:
-        <span class="help-block">The place to put all rule text and reference links.</span>
+        <span class="help-block">The place to put all rule text you need.</span>
         <textarea name="description" class="form-control" rows="5"></textarea>
+        </p>
+
+        <p>
+            <strong>Reference Link</strong>:
+            <span class="help-block">A URL reference for this item. <small>example: http://google.com</small></span>
+            <input type="text" name="link" class="form-control">
         </p>
 
         <p><strong>Slot</strong>:
@@ -105,6 +111,10 @@
                 <p><strong>Quantity</strong>: {{ item.quantity }}</p>
                 <p><strong>Description</strong>:</p>
                 <pre class="item_desc">{{ item.description }}</pre>
+                {% if item.link %}
+                <br>
+                <p><small><strong>Reference:</strong> <a target="_blank" href="{{ item.link }}">{{ item.link }}</a></small></p>
+                {% endif %}
 
                 {% if not readonly %}
                 <hr>
@@ -136,8 +146,14 @@
                     <input type="number" name="quantity" class="form-control" value="{{ item.quantity }}"></p>
                 <p>
                     <strong>Description</strong>:
-                    <span class="help-block">The place to put all rule text and reference links.</span>
+                    <span class="help-block">The place to put all rule text you need.</span>
                     <textarea name="description" class="form-control" rows="5">{{ item.description }}</textarea>
+                </p>
+
+                <p>
+                    <strong>Reference Link</strong>:
+                    <span class="help-block">A URL reference for this item. <small>example: http://google.com</small></span>
+                    <input type="text" name="link" class="form-control" value="{{ item.link }}">
                 </p>
 
                 <p><strong>Slot</strong>:

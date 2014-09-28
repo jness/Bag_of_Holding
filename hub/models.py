@@ -31,6 +31,7 @@ class Item(models.Model):
     quantity = models.IntegerField()
     icon = models.ForeignKey(Icon)
     slot = models.ForeignKey(Slot)
+    link = models.URLField(null=True)
     character = models.ForeignKey(Character)
 
     class Meta:

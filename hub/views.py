@@ -66,13 +66,14 @@ def add(request, character_id):
                 raise Exception('You do not have access to add items to this slot.')
 
             name = request.POST['name']
+            link = request.POST['link']
             description = request.POST['description']
             quantity = request.POST['quantity']
 
             icon = Icon.objects.get(id=request.POST['icon'])
             item = Item.objects.create(name=name, description=description,
                                        quantity=quantity, icon=icon,
-                                       character=chara, slot=slot)
+                                       character=chara, slot=slot, link=link)
 
             return redirect('/character/%s#%s-anchor' % (
                 character_id, slugify(item.name)))
@@ -100,6 +101,7 @@ def update(request, character_id, item_id):
                 raise Exception('You do not have access to add items to this slot.')
 
             name = request.POST['name']
+            link = request.POST['link']
             description = request.POST['description']
             quantity = request.POST['quantity']
             icon = Icon.objects.get(id=request.POST['icon'])
@@ -109,6 +111,7 @@ def update(request, character_id, item_id):
             item.quantity = quantity
             item.icon = icon
             item.slot = slot
+            item.link = link
             item.save()
 
             return redirect('/character/%s#%s-anchor' % (
