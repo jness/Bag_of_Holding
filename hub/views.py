@@ -25,7 +25,9 @@ def add_character(request):
     if request.method == 'POST':
         name = request.POST['name']
         slot = Slot.objects.create(name='Large Pocket')
-        Character.objects.create(name=name, owner=request.user, slot=slot)
+        chara = Character.objects.create(name=name, owner=request.user)
+        chara.slots.add(slot)
+        chara.save()
 
     return redirect('/profile')
 
