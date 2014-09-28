@@ -61,6 +61,10 @@
 
 {% block body %}
 {% for slot in character.slots.iterator %}
+    <div class="row">
+    <div class="container-fluid">
+    <h3>{{ slot.name }}</h3>
+
 {% for item in slot.items.iterator %}
 <div class="panel-group" id="{{ item.name|slugify }}-accordion">
     <div class="panel panel-default">
@@ -167,6 +171,8 @@
 {% endif %}
 
 {% endfor %}
+    </div>
+    </div>
 {% endfor %}
 
 <!-- jump to anchor and expand item. -->
