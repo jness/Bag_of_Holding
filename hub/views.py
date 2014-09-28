@@ -24,16 +24,17 @@ def add_character(request):
 
     if request.method == 'POST':
         name = request.POST['name']
-        slot = Slot.objects.create(name='Large Pocket')
         chara = Character.objects.create(name=name, owner=request.user)
-        chara.slots.add(slot)
-        chara.save()
+        Slot.objects.create(name='Inventory', character=chara)
+        Slot.objects.create(name='Spells Per Day', character=chara)
 
     return redirect('/profile')
 
 
 def character(request, character_id):
     chara = Character.objects.get(id=character_id)
+    slots = Slot.objects.filter(character=chara)
+    items = Item.objects.filter(character=chara)
 
     # Determine if this object should be readonly.
     readonly = True
@@ -42,7 +43,8 @@ def character(request, character_id):
 
     icons = Icon.objects.all()
     return render(request, 'hub/character.html', dict(
-        icons=icons, character=chara, readonly=readonly))
+        icons=icons, character=chara, slots=slots, items=items,
+        readonly=readonly))
 
 
 def add(request, character_id):
@@ -50,6 +52,7 @@ def add(request, character_id):
         return redirect('/')
 
     if request.method == 'POST':
+
         chara = Character.objects.get(id=character_id)
         if not request.user == chara.owner:
             raise Exception('You do not have access to add items for this username.')
@@ -57,14 +60,18 @@ def add(request, character_id):
         form = ItemForm(request.POST)
         if form.is_valid():
 
+            slot = Slot.objects.get(id=request.POST['slot'])
+            if not chara == slot.character:
+                raise Exception('You do not have access to add items to this slot.')
+
             name = request.POST['name']
             description = request.POST['description']
             quantity = request.POST['quantity']
-            icon = Icon.objects.get(id=request.POST['icon'])
 
+            icon = Icon.objects.get(id=request.POST['icon'])
             item = Item.objects.create(name=name, description=description,
                                        quantity=quantity, icon=icon,
-                                       character=chara)
+                                       character=chara, slot=slot)
 
             return redirect('/character/%s#%s-anchor' % (
                 character_id, slugify(item.name)))
@@ -77,6 +84,7 @@ def update(request, character_id, item_id):
         return redirect('/')
 
     if request.method == 'POST':
+
         chara = Character.objects.get(id=character_id)
         if not request.user == chara.owner:
             raise Exception('You do not have access to add items for this username.')
@@ -85,6 +93,10 @@ def update(request, character_id, item_id):
 
         form = ItemUpdateForm(request.POST)
         if form.is_valid():
+
+            slot = Slot.objects.get(id=request.POST['slot'])
+            if not chara == slot.character:
+                raise Exception('You do not have access to add items to this slot.')
 
             name = request.POST['name']
             description = request.POST['description']
@@ -95,6 +107,7 @@ def update(request, character_id, item_id):
             item.description = description
             item.quantity = quantity
             item.icon = icon
+            item.slot = slot
             item.save()
 
             return redirect('/character/%s#%s-anchor' % (

@@ -1,6 +1,7 @@
 {% extends "hub/base.html" %}
 
 {% block loot_button %}
+<h3><small><strong>{{ character.name }}'s</strong> Inventory [{{ items|length }}]</small></h3><br>
 <p>
     {% if not readonly %}
     <button type="button" class="btn btn-default btn-ls" data-toggle="modal" data-target="#newItemModal">
@@ -9,7 +10,6 @@
     {% endif %}
 </p>
 <p>
-    <h4><small><strong>{{ character.name }}'s</strong> Inventory [{{ items|length }}]</small></h4>
 </p>
 {% endblock %}
 
@@ -32,6 +32,15 @@
         <p><strong>Description</strong>:
         <span class="help-block">The place to put all rule text and reference links.</span>
         <textarea name="description" class="form-control" rows="5"></textarea>
+        </p>
+
+        <p><strong>Slot</strong>:
+        <span class="help-block">Which bag slot should this item go in?</span>
+        <select name="slot" class="form-control">
+          {% for slot in slots %}
+            <option value="{{ slot.id }}">{{ slot.name }}</option>
+          {% endfor %}
+        </select>
         </p>
 
         <p><strong>Icon</strong>:
@@ -60,12 +69,14 @@
 {% endblock %}
 
 {% block body %}
-{% for slot in character.slots.iterator %}
-    <div class="row">
+ <div class="row">
     <div class="container-fluid">
-    <h3>{{ slot.name }}</h3>
+{% for slot in slots %}
+    <h6><strong>{{ slot.name }}</strong></h6>
+    <hr>
 
-{% for item in slot.items.iterator %}
+{% for item in items %}
+    {% if item.slot == slot %}
 <div class="panel-group" id="{{ item.name|slugify }}-accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -128,6 +139,19 @@
                     <textarea name="description" class="form-control" rows="5">{{ item.description }}</textarea>
                 </p>
 
+                <p><strong>Slot</strong>:
+                    <span class="help-block">Which bag slot should this item go in?</span>
+                    <select name="slot" class="form-control">
+                      {% for slot in slots %}
+                        {% if slot.id == item.slot.id %}
+                            <option selected value="{{ slot.id }}">{{ slot.name }}</option>
+                        {% else %}
+                            <option value="{{ slot.id }}">{{ slot.name }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                </p>
+
                 <p><strong>Icon</strong>:
                     <span class="help-block">Created by <a target="_blank" href="http://www.pixeljoint.com/pixelart/44976.htm"><strong>Ailas</strong></a></span>
                 </p>
@@ -170,6 +194,7 @@
 </div>
 {% endif %}
 
+{% endif %}
 {% endfor %}
     </div>
     </div>

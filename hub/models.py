@@ -9,11 +9,9 @@ class Icon(models.Model):
         return self.image.name
 
 
-class Item(models.Model):
-    name = models.CharField(max_length=75)
-    description = models.TextField()
-    quantity = models.IntegerField()
-    icon = models.ForeignKey(Icon)
+class Character(models.Model):
+    name = models.CharField(max_length=75, unique=True)
+    owner = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.name
@@ -21,16 +19,22 @@ class Item(models.Model):
 
 class Slot(models.Model):
     name = models.CharField(max_length=75)
-    items = models.ManyToManyField(Item)
+    character = models.ForeignKey(Character)
 
     def __unicode__(self):
         return self.name
 
 
-class Character(models.Model):
-    name = models.CharField(max_length=75, unique=True)
-    owner = models.ForeignKey(User)
-    slots = models.ManyToManyField(Slot)
+class Item(models.Model):
+    name = models.CharField(max_length=75)
+    description = models.TextField()
+    quantity = models.IntegerField()
+    icon = models.ForeignKey(Icon)
+    slot = models.ForeignKey(Slot)
+    character = models.ForeignKey(Character)
+
+    class Meta:
+        unique_together = ('name', 'character')
 
     def __unicode__(self):
         return self.name
