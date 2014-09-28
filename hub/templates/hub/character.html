@@ -71,12 +71,13 @@
 {% block body %}
  <div class="row">
     <div class="container-fluid">
-{% for slot in slots %}
-    <h6><strong>{{ slot.name }}</strong></h6>
+
+    {% for slot in slots %}
+    <h5><strong>{{ slot.name }}</strong></h5>
     <hr>
 
 {% for item in items %}
-    {% if item.slot == slot %}
+{% if item.slot == slot %}
 <div class="panel-group" id="{{ item.name|slugify }}-accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -196,9 +197,9 @@
 
 {% endif %}
 {% endfor %}
-    </div>
-    </div>
 {% endfor %}
+</div>
+</div>
 
 <!-- jump to anchor and expand item. -->
 <script type="application/javascript">
