@@ -15,9 +15,6 @@ class Item(models.Model):
     quantity = models.IntegerField()
     icon = models.ForeignKey(Icon)
 
-    class Meta:
-        unique_together = ("name", "character")
-
     def __unicode__(self):
         return self.name
 
