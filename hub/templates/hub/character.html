@@ -60,7 +60,8 @@
 {% endblock %}
 
 {% block body %}
-{% for item in items %}
+{% for slot in character.slots %}
+{% for item in slot.items %}
 <div class="panel-group" id="{{ item.name|slugify }}-accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -164,6 +165,8 @@
     </div>
 </div>
 {% endif %}
+
+{% endfor %}
 {% endfor %}
 
 <!-- jump to anchor and expand item. -->

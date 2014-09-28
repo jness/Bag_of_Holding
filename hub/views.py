@@ -34,7 +34,6 @@ def add_character(request):
 
 def character(request, character_id):
     chara = Character.objects.get(id=character_id)
-    items = Item.objects.filter(character=chara).order_by('name')
 
     # Determine if this object should be readonly.
     readonly = True
@@ -43,7 +42,7 @@ def character(request, character_id):
 
     icons = Icon.objects.all()
     return render(request, 'hub/character.html', dict(
-        icons=icons, character=chara, items=items, readonly=readonly))
+        icons=icons, character=chara, readonly=readonly))
 
 
 def add(request, character_id):
