@@ -42,7 +42,7 @@ def character(request, character_id):
     if request.user == chara.owner:
         readonly = False
 
-    icons = Icon.objects.all()
+    icons = Icon.objects.all().order_by('name')
     return render(request, 'hub/character.html', dict(
         icons=icons, character=chara, slots=slots, items=items,
         readonly=readonly))
