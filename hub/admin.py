@@ -3,7 +3,7 @@ from hub.models import Icon, Item, Character, Slot
 
 
 class SlotAdmin(admin.ModelAdmin):
-    list_display = ['name', 'items']
+    list_display = ['name']
 admin.site.register(Slot, SlotAdmin)
 
 
@@ -13,7 +13,7 @@ admin.site.register(Item, ItemAdmin)
 
 
 class CharacterAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner', 'slots']
+    list_display = ['name', 'owner']
 admin.site.register(Character, CharacterAdmin)
 
 admin.site.register(Icon)
