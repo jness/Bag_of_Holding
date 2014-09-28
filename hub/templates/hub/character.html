@@ -60,8 +60,8 @@
 {% endblock %}
 
 {% block body %}
-{% for slot in character.slots %}
-{% for item in slot.items %}
+{% for slot in character.slots.iterator %}
+{% for item in slot.items.iterator %}
 <div class="panel-group" id="{{ item.name|slugify }}-accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
