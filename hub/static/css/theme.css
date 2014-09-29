@@ -11,6 +11,11 @@ body {
 .mybadage {
     background-color: #9ac1e3;
 }
+
+.mybadage-empty {
+    background-color: #e39a9a;
+}
+
 .icon-box {
     text-align:right;
 }

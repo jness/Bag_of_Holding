@@ -41,9 +41,8 @@
                     <tr>
                         <td><img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" /></td>
                         <td>
-                            <p><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}
-                                <span class="badge mybadage">{{ item.quantity }}</span>
-                            </a>
+                            <p><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}</a>
+                                <span class="badge {% if item.quantity <= 0 %}mybadage-empty{% else %}mybadage{% endif %}">{{ item.quantity }}</span>
                         </td>
 
                         <!-- Item Modal -->
@@ -56,7 +55,9 @@
                                     </div>
 
                                     <div class="modal-body">
-                                        <p><strong>Quantity</strong>: {{ item.quantity }}</p>
+                                        <p>
+                                            <strong>Quantity</strong>: {{ item.quantity }}
+                                        </p>
                                         <p><strong>Description</strong>:</p>
                                         <pre class="item_desc">{{ item.description }}</pre>
                                         {% if item.link %}
