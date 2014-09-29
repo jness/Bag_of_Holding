@@ -45,6 +45,23 @@ def create_slot(request, character_id):
     return redirect('/character/%s/' % chara.id)
 
 
+def delete_slot(request, character_id, slot_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to add slots for this username.')
+
+    slot = Slot.objects.get(id=slot_id)
+    if not chara == slot.character:
+        raise Exception('You do not have access to add slots for this username.')
+
+    slot.delete()
+
+    return redirect('/character/%s/' % chara.id)
+
+
 def rename_slot(request, character_id, slot_id):
     if not request.user.is_authenticated:
         return redirect('/')
