@@ -206,6 +206,10 @@ def trash(request, character_id, item_id):
             raise Exception('You do not have access to add items for this username.')
 
         item = Item.objects.get(id=item_id)
+        if not item.character == chara:
+            raise Exception('You do not have access to this item.')
+
+        item = Item.objects.get(id=item_id)
         item.delete()
 
     return redirect('/character/%s' % character_id)
