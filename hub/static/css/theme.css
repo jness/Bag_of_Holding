@@ -12,10 +12,6 @@ body {
     text-align:right;
 }
 
-.mytd {
-    vertical-align: middle;
-}
-
 .item_desc {
     border: 0px;
     background-color: white;
