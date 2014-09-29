@@ -8,6 +8,9 @@ body {
   width: 90%;
 }
 
+.badage {
+    background-color: #999999;
+}
 .icon-box {
     text-align:right;
 }
