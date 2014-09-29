@@ -38,7 +38,7 @@
         <tbody>
             {% for item in items %}
                 {% if item.slot == slot %}
-                    <tr>
+                    <tr class="mytr">
                         <td><img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" /></td>
                         <td><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}</a></td>
 
