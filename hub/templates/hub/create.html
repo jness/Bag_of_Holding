@@ -1,7 +1,7 @@
 {% extends "hub/base.html" %}
 
 {% block body %}
-    <form action="{% url "add" character.id %}" method="post">
+    <form action="{% url add character.id %}" method="post">
     {% csrf_token %}
 
     <p><strong>Item Name</strong>:

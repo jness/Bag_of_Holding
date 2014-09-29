@@ -7,7 +7,7 @@
 <br>
 <p>
     {% if not readonly %}
-    <a class="btn btn-primary btn-lg" href="{% url "create_item" character.id %}">
+    <a class="btn btn-primary btn-lg" href="{% url create_item character.id %}">
         <span class="glyphicon glyphicon-plus-sign"></span> Add Loot!
     </a>
     {% endif %}
@@ -65,7 +65,7 @@
                                   <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#{{ item.name|slugify }}-trash-modal">Trash</button>
-                                        <a class="btn btn-success" href="{% url "update_item" character.id item.id %}">Modify</a>
+                                        <a class="btn btn-success" href="{% url update_item character.id item.id %}">Modify</a>
                                   </div>
                                   {% endif %}
                             </div><!-- /.modal-content -->
@@ -79,7 +79,7 @@
                                         <p>Are you sure you want to <strong>DELETE</strong> item <strong>{{ item.name }}</strong></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <form action="{% url "trash" character.id item.id %}" method="post">
+                                        <form action="{% url trash character.id item.id %}" method="post">
                                         {% csrf_token %}
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-danger">Trash</button>
