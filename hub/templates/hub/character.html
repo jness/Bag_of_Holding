@@ -19,9 +19,11 @@
 {% block body %}
  <div class="row">
 
+    {% if not readonly %}
      <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#create-slot">
       <span class="glyphicon glyphicon-plus"></span>
     </button>
+    {% endif %}
 
     {% for slot in slots %}
     {% if not readonly %}
