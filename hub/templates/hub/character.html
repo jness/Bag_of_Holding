@@ -41,9 +41,9 @@
                     <tr>
                         <td><img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" /></td>
                         <td>
-                            <p><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}</a></p>
-                            <p><span class="badge"><small><strong>Quantity:</strong> {{ item.quantity }}</small></span></p>
-
+                            <p><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}
+                                <span class="badge mybadage">{{ item.quantity }}</span>
+                            </a>
                         </td>
 
                         <!-- Item Modal -->
