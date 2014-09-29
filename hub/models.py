@@ -21,6 +21,9 @@ class Slot(models.Model):
     name = models.CharField(max_length=75)
     character = models.ForeignKey(Character)
 
+    class Meta:
+        unique_together = ('name', 'character')
+
     def __unicode__(self):
         return self.name
 

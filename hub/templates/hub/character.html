@@ -19,7 +19,35 @@
 {% block body %}
  <div class="row">
 
+     <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#create-slot">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>
+
     {% for slot in slots %}
+    {% if not readonly %}
+    <div class="modal fade" id="slot-{{ slot.name|slugify }}" tabindex="-1" role="dialog" aria-labelledby="slot-{{ slot.name|slugify }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                <form action="{% url rename_slot character.id slot.id %}" method="post">
+                <div class="modal-body">
+                    <p>
+                        <strong>Update slot name</strong>:
+                        <span class="help-block">Give this slot a useful name.</span>
+                        <input type="text" name="name" class="form-control" value="{{ slot.name }}">
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <table class="table table-striped">
 
         <thead>
@@ -27,7 +55,7 @@
                 <th width="75"></th>
                 <th>
                     <h4>
-                        <span class="label label-default pull-right">
+                        <span class="label label-default pull-right" data-toggle="modal" data-target="#slot-{{ slot.name|slugify }}">
                             <strong>{{ slot.name }}</strong>
                         </span>
                     </h4>
@@ -76,23 +104,6 @@
                             </div><!-- /.modal-content -->
                           </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
-
-                        <div class="modal fade" id="{{ item.name|slugify }}-trash-modal" tabindex="-1" role="dialog" aria-labelledby="{{ item.name|slugify }}-trash-modalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to <strong>DELETE</strong> item <strong>{{ item.name }}</strong></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="{% url trash character.id item.id %}" method="post">
-                                        {% csrf_token %}
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-danger">Trash</button>
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -105,6 +116,31 @@
 {% endblock %}
 
 {% block modal %}
+    {% if not readonly %}
+    <div class="modal fade" id="create-slot" tabindex="-1" role="dialog" aria-labelledby="create-slot" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                <form action="{% url create_slot character.id %}" method="post">
+                <div class="modal-body">
+                    <p>
+                        <strong>Create new slot</strong>:
+                        <span class="help-block">Give this slot a useful name.</span>
+                        <input type="text" name="name" class="form-control">
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <script type="application/javascript">
     if(window.location.hash) {
         h = window.location.hash;
@@ -114,4 +150,6 @@
         }
     }
     </script>
+
+
 {% endblock %}

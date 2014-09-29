@@ -26,16 +26,49 @@ def create_character(request):
         name = request.POST['name']
         chara = Character.objects.create(name=name, owner=request.user)
         Slot.objects.create(name="%s's Inventory" % chara.name, character=chara)
-        Slot.objects.create(name="%s's Quest Items" % chara.name, character=chara)
-        Slot.objects.create(name="%s's Spells Per Day" % chara.name, character=chara)
 
     return redirect('/profile')
 
 
+def create_slot(request, character_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to add slots for this username.')
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        Slot.objects.create(name=name, character=chara)
+
+    return redirect('/character/%s/' % chara.id)
+
+
+def rename_slot(request, character_id, slot_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to this character.')
+
+    slot = Slot.objects.get(id=slot_id)
+    if not chara == slot.character:
+        raise Exception('You do not have access to add slots for this username.')
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        slot.name = name
+        slot.save()
+
+    return redirect('/character/%s/' % chara.id)
+
+
 def character(request, character_id):
     chara = Character.objects.get(id=character_id)
-    slots = Slot.objects.filter(character=chara)
-    items = Item.objects.filter(character=chara)
+    slots = Slot.objects.filter(character=chara).order_by('name')
+    items = Item.objects.filter(character=chara).order_by('name')
 
     # Determine if this object should be readonly.
     readonly = True
