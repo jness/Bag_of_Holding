@@ -211,6 +211,7 @@ def trash(request, character_id, item_id):
 
         item = Item.objects.get(id=item_id)
         item.delete()
+        item.save()
 
     return redirect('/character/%s' % character_id)
 
