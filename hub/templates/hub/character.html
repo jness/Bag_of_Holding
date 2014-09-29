@@ -40,7 +40,7 @@
                 {% if item.slot == slot %}
                     <tr>
                         <td><img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" /></td>
-                        <td><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}</a></td>
+                        <td><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }} <span class="badge">{{ item.quantity }}</span></a></td>
 
                         <!-- Item Modal -->
                         <div class="modal fade" id="{{ item.name|slugify }}" data-toggle="#{{ item.name|slugify }}">
@@ -48,7 +48,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                        <h4 class="modal-title"><strong>{{ item.name }}</strong></h4>
+                                        <h4 class="modal-title"><strong>{{ item.name }}</strong> <a href="{% url character character.id %}#{{ item.name|slugify }}"><span class="glyphicon glyphicon-search"></span></a></h4>
                                     </div>
 
                                     <div class="modal-body">
