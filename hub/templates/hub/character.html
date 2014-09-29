@@ -1,231 +1,113 @@
 {% extends "hub/base.html" %}
 
-{% block loot_button %}
-<h3><small>Items [{{ items|length }}]</small></h3><br>
+{% block jumbotron %}
+<h3>
+    <small>Tracking <strong>[{{ items|length }}]</strong> objects for {{ character.name }}</small>
+</h3>
+<br>
 <p>
     {% if not readonly %}
-    <button type="button" class="btn btn-default btn-ls" data-toggle="modal" data-target="#newItemModal">
-    <span class="glyphicon glyphicon-plus-sign"></span> Add Loot!
-    </button>
+    <a class="btn btn-primary btn-lg" href="{% url "create_item" character.id %}">
+        <span class="glyphicon glyphicon-plus-sign"></span> Add Loot!
+    </a>
     {% endif %}
 </p>
 <p>
 </p>
 {% endblock %}
 
-{% block loot_modal %}
-{% if not readonly %}
-<div class="modal fade" id="newItemModal" tabindex="-1" role="dialog" aria-labelledby="newItemModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form action="/add/{{ character.id }}/" method="post">
-      {% csrf_token %}
-      <div class="modal-body">
-        <p><strong>Item Name</strong>:
-        <span class="help-block">This should need no explanation.</span>
-        <input type="text" name="name" class="form-control">
-        </p>
-        <p><strong>Quantity</strong>:
-        <span class="help-block">How many of the item do you have in your possession.</span>
-        <input type="number" name="quantity" class="form-control">
-        </p>
-        <p><strong>Description</strong>:
-        <span class="help-block">The place to put all rule text you need.</span>
-        <textarea name="description" class="form-control" rows="5"></textarea>
-        </p>
-
-        <p>
-            <strong>Reference Link</strong>:
-            <span class="help-block">A URL reference for this item. <small>example: http://google.com</small></span>
-            <input type="text" name="link" class="form-control">
-        </p>
-
-        <p><strong>Slot</strong>:
-        <span class="help-block">Which bag slot should this item go in?</span>
-        <select name="slot" class="form-control">
-          {% for slot in slots %}
-            <option value="{{ slot.id }}">{{ slot.name }}</option>
-          {% endfor %}
-        </select>
-        </p>
-
-        <p><strong>Icon</strong>:
-        <span class="help-block">Created by <a target="_blank" href="http://www.pixeljoint.com/pixelart/44976.htm"><strong>Ailas</strong></a></span>
-        </p>
-
-        <div class="icon-box">
-        {% for icon in icons %}
-            <label class="checkbox-inline">
-            <input class="button" type="radio" name="icon" value="{{ icon.id }}">
-            <img style="padding: 5px;" width="40" src="{{ icon.image.url }}" />
-            </label>
-        {% endfor %}
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Add Loot!</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-{% endif %}
-{% endblock %}
-
 {% block body %}
  <div class="row">
-    <div class="container-fluid">
 
     {% for slot in slots %}
-    <h5><strong>{{ slot.name }}</strong></h5>
-    <hr>
+    <table class="table table-striped">
 
-{% for item in items %}
-{% if item.slot == slot %}
-<div class="panel-group" id="{{ item.name|slugify }}-accordion">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-            <div class="row">
-                <div class="col-md-12">
-                    <a style="outline: 0;" data-toggle="collapse" data-parent="#{{ item.name|slugify }}-accordion" href="#{{ item.name|slugify }}">
-                    <table>
+        <thead>
+            <tr>
+                <th width="75"></th>
+                <th>
+                    <h4>
+                        <span class="label label-default pull-right">
+                            <strong>{{ slot.name }}</strong>
+                        </span>
+                    </h4>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+                {% if item.slot == slot %}
                     <tr>
-                    <td width="50">
-                    <img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" />
-                    </td>
-                    <td>{{ item.name }}</td>
+                        <td><img class="img-thumbnail" width="40" src="{{ item.icon.image.url}}" /></td>
+                        <td><a href="#{{ item.name|slugify}}" data-toggle="modal" data-target="#{{ item.name|slugify }}">{{ item.name }}</a></td>
+
+                        <!-- Item Modal -->
+                        <div class="modal fade" id="{{ item.name|slugify }}" data-toggle="#{{ item.name|slugify }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                        <h4 class="modal-title"><strong>{{ item.name }}</strong></h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <p><strong>Quantity</strong>: {{ item.quantity }}</p>
+                                        <p><strong>Description</strong>:</p>
+                                        <pre class="item_desc">{{ item.description }}</pre>
+                                        {% if item.link %}
+                                        <hr>
+                                        <p><strong>Reference:</strong> <a target="_blank" href="{{ item.link }}">{{ item.link }}</a></p>
+                                        {% endif %}
+                                    </div>
+
+                                  {% if not readonly %}
+                                  <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#{{ item.name|slugify }}-trash-modal">Trash</button>
+                                        <a class="btn btn-success" href="{% url "update_item" character.id item.id %}">Modify</a>
+                                  </div>
+                                  {% endif %}
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+                        <div class="modal fade" id="{{ item.name|slugify }}-trash-modal" tabindex="-1" role="dialog" aria-labelledby="{{ item.name|slugify }}-trash-modalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to <strong>DELETE</strong> item <strong>{{ item.name }}</strong></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form action="{% url "trash" character.id item.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Trash</button>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </tr>
-                    </table>
-                    </a>
-                </div>
-            </div>
-            </h4>
-        </div>
-
-        <div id="{{ item.name|slugify }}" class="panel-collapse collapse">
-            <a name="{{ item.name|slugify }}-anchor"></a>
-            <div class="panel-body">
-                <p><strong>Quantity</strong>: {{ item.quantity }}</p>
-                <p><strong>Description</strong>:</p>
-                <pre class="item_desc">{{ item.description }}</pre>
-                {% if item.link %}
-                <br>
-                <p><small><strong>Reference:</strong> <a target="_blank" href="{{ item.link }}">{{ item.link }}</a></small></p>
                 {% endif %}
+            {% endfor %}
+        </tbody>
 
-                {% if not readonly %}
-                <hr>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#{{ item.name|slugify }}-update-modal">Update</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#{{ item.name|slugify }}-trash-modal">Trash</button>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
+    </table>
+    {% endfor %}
+ </div>
 
-{% if not readonly %}
-<!-- Update Loot Modal -->
-<div class="modal fade" id="{{ item.name|slugify }}-update-modal" tabindex="-1" role="dialog" aria-labelledby="{{ item.name|slugify }}-update-modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="/update/{{ character.id }}/{{ item.id }}/" method="post">
-            {% csrf_token %}
-            <div class="modal-body">
-                <p>
-                    <strong>Item Name</strong>:
-                    <span class="help-block">This should need no explanation.</span>
-                    <input type="text" name="name" class="form-control" value="{{ item.name }}">
-                </p>
+{% endblock %}
 
-                <p>
-                    <strong>Quantity</strong>:
-                    <span class="help-block">How many of the item do you have in your possession.</span>
-                    <input type="number" name="quantity" class="form-control" value="{{ item.quantity }}"></p>
-                <p>
-                    <strong>Description</strong>:
-                    <span class="help-block">The place to put all rule text you need.</span>
-                    <textarea name="description" class="form-control" rows="5">{{ item.description }}</textarea>
-                </p>
-
-                <p>
-                    <strong>Reference Link</strong>:
-                    <span class="help-block">A URL reference for this item. <small>example: http://google.com</small></span>
-                    <input type="text" name="link" class="form-control" value="{{ item.link }}">
-                </p>
-
-                <p><strong>Slot</strong>:
-                    <span class="help-block">Which bag slot should this item go in?</span>
-                    <select name="slot" class="form-control">
-                      {% for slot in slots %}
-                        {% if slot.id == item.slot.id %}
-                            <option selected value="{{ slot.id }}">{{ slot.name }}</option>
-                        {% else %}
-                            <option value="{{ slot.id }}">{{ slot.name }}</option>
-                        {% endif %}
-                      {% endfor %}
-                    </select>
-                </p>
-
-                <p><strong>Icon</strong>:
-                    <span class="help-block">Created by <a target="_blank" href="http://www.pixeljoint.com/pixelart/44976.htm"><strong>Ailas</strong></a></span>
-                </p>
-
-                <div class="icon-box">
-                {% for icon in icons %}
-                    <label class="checkbox-inline">
-                    <input class="button" type="radio" name="icon" value="{{ icon.id }}" {% if item.icon.id == icon.id %}checked{% endif %}>
-                    <img style="padding: 5px;" width="40" src="{{ icon.image.url }}" />
-                    </label>
-                {% endfor %}
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update Loot!</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Trash Loot Modal -->
-<div class="modal fade" id="{{ item.name|slugify }}-trash-modal" tabindex="-1" role="dialog" aria-labelledby="{{ item.name|slugify }}-trash-modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p>Are you sure you want to <strong>DELETE</strong> item <strong>{{ item.name }}</strong></p>
-            </div>
-            <div class="modal-footer">
-                <form action="/trash/{{ character.id }}/{{ item.id }}/" method="post">
-                {% csrf_token %}
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Trash Loot!</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-{% endif %}
-{% endfor %}
-{% endfor %}
-</div>
-</div>
-
-<!-- jump to anchor and expand item. -->
-<script type="application/javascript">
+{% block modal %}
+    !-- jump to anchor and expand item. -->
+    <script type="application/javascript">
     if(window.location.hash) {
-        h = window.location.hash
-        h = h.replace('-anchor', '');
-        h = h.replace('#', '');
-        item = document.getElementById(h);
-        item.className += " " + "in";
+        h = window.location.hash;
+        item = document.getElementById(h.replace('#', ''));
+        if (item) {
+            $(h).modal('show');
+        }
     }
-</script>
-
+    </script>
 {% endblock %}

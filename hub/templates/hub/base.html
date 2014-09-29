@@ -22,17 +22,17 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
+            <li class="active"><a href="{% url "home" %}">Home</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
                 <li>
-                    <a href="/profile/">Welcome {{ request.user }}</a>
+                    <a href="{% url "profile" %}">Welcome {{ request.user }}</a>
                 </li>
-                <li><a href="/logout/"><small>[ Logout ]</small></a></li>
-                <li><a href="/change_password/"><small>[ Change Password ]</small></a></li>
+                <li><a href="{% url "mylogout" %}"><small>[ Logout ]</small></a></li>
+                <li><a href="{% url "update_password" %}"><small>[ Change Password ]</small></a></li>
             {% else %}
-                <li><a href="/login/">Login</a></li>
+                <li><a href="{% url "mylogin" %}">Login</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
@@ -46,12 +46,12 @@
             <h1><strong>Bag of Holding</strong></h1>
             <p class="lead">A universal loot tracker for all your role playing game needs.</p>
 
-            {% block loot_button %}
+            {% block jumbotron %}
             {% endblock %}
         </div>
 
 
-        <!-- Item list -->
+        <!-- Body -->
         <div class="col-md-12">
             {% block body %}
             {% endblock %}
@@ -64,7 +64,7 @@
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="/static/bootstrap/js/bootstrap.js"></script>
 
-        {% block loot_modal %}
+        {% block modal %}
         {% endblock %}
 
     </body>

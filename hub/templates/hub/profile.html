@@ -8,16 +8,16 @@
    </h3>
 
    {% for character in characters %}
-       <p><span class="glyphicon glyphicon-pushpin"></span> <a href="/character/{{ character.id }}/">{{ character.name }}</a></p>
+       <p><span class="glyphicon glyphicon-pushpin"></span> <a href="{% url "character" character.id %}">{{ character.name }}</a></p>
    {% endfor %}
 {% endblock %}
 
-{% block loot_modal %}
+{% block modal %}
 <!-- Trash Loot Modal -->
-<div class="modal fade" id="add-character-modal" tabindex="-1" role="dialog" aria-labelledby="add-character-modalLabel" aria-hidden="true">
+<div class="modal fade" id="add-character-modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/add_character/" method="post">
+            <form action="{% url "create_character" %}" method="post">
             <div class="modal-body">
                 <p>
                     <strong>Character Name</strong>:

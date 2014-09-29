@@ -1,7 +1,7 @@
 
 body {
   padding-top: 20px;
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+  font-family: 'Verdana', sans-serif;
 }
 
 .modal-dialog{
@@ -10,6 +10,10 @@ body {
 
 .icon-box {
     text-align:right;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
 }
 
 .item_desc {

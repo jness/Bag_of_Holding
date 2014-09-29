@@ -18,7 +18,7 @@ def profile(request):
     return render(request, 'hub/profile.html', dict(characters=charas))
 
 
-def add_character(request):
+def create_character(request):
     if not request.user.is_authenticated:
         return redirect('/profile')
 
@@ -48,6 +48,32 @@ def character(request, character_id):
         readonly=readonly))
 
 
+def create_item(request, character_id):
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to add items for this username.')
+
+    slots = Slot.objects.filter(character=chara)
+    icons = Icon.objects.all().order_by('image')
+    return render(request, 'hub/create.html', dict(
+        icons=icons, character=chara, slots=slots))
+
+
+def update_item(request, character_id, item_id):
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to add items for this username.')
+
+    item = Item.objects.get(id=item_id)
+    if not chara == item.character:
+        raise Exception('This item does not belong to you.')
+
+    slots = Slot.objects.filter(character=chara)
+    icons = Icon.objects.all().order_by('image')
+    return render(request, 'hub/update.html', dict(
+        icons=icons, character=chara, slots=slots, item=item))
+
+
 def add(request, character_id):
     if not request.user.is_authenticated:
         return redirect('/')
@@ -75,7 +101,7 @@ def add(request, character_id):
                                        quantity=quantity, icon=icon,
                                        character=chara, slot=slot, link=link)
 
-            return redirect('/character/%s#%s-anchor' % (
+            return redirect('/character/%s#%s' % (
                 character_id, slugify(item.name)))
         else:
             raise Exception('Form not valid..')
@@ -114,7 +140,7 @@ def update(request, character_id, item_id):
             item.link = link
             item.save()
 
-            return redirect('/character/%s#%s-anchor' % (
+            return redirect('/character/%s#%s' % (
                 character_id, slugify(item.name)))
         else:
             raise Exception('Form not valid..')
@@ -156,7 +182,7 @@ def mylogout(request):
     return redirect('/')
 
 
-def change_password(request):
+def update_password(request):
     if not request.user.is_authenticated:
         return redirect('/')
 

@@ -1,0 +1,52 @@
+{% extends "hub/base.html" %}
+
+{% block body %}
+    <form action="{% url "add" character.id %}" method="post">
+    {% csrf_token %}
+
+    <p><strong>Item Name</strong>:
+    <span class="help-block">This should need no explanation.</span>
+    <input type="text" name="name" class="form-control">
+    </p>
+    <p><strong>Quantity</strong>:
+    <span class="help-block">How many of the item do you have in your possession.</span>
+    <input type="number" name="quantity" class="form-control">
+    </p>
+    <p><strong>Description</strong>:
+    <span class="help-block">The place to put all rule text you need.</span>
+    <textarea name="description" class="form-control" rows="5"></textarea>
+    </p>
+
+    <p><strong>Reference Link</strong>:
+       <span class="help-block">A URL reference for this item. </span>
+       <input type="text" name="link" class="form-control">
+    </p>
+
+    <p><strong>Slot</strong>:
+    <span class="help-block">Which bag slot should this item go in?</span>
+    <select name="slot" class="form-control">
+      {% for slot in slots %}
+        <option value="{{ slot.id }}">{{ slot.name }}</option>
+      {% endfor %}
+    </select>
+    </p>
+
+    <p><strong>Icon</strong>:
+    <span class="help-block">Created by <a target="_blank" href="http://www.pixeljoint.com/pixelart/44976.htm"><strong>Ailas</strong></a></span>
+    </p>
+
+    <div class="icon-box">
+    {% for icon in icons %}
+        <label class="checkbox-inline">
+        <input class="button" type="radio" name="icon" value="{{ icon.id }}">
+        <img style="padding: 5px;" width="40" src="{{ icon.image.url }}" />
+        </label>
+    {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Loot</button>
+
+    </form>
+    <hr>
+
+{% endblock %}
