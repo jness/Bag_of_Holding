@@ -200,18 +200,16 @@ def trash(request, character_id, item_id):
     if not request.user.is_authenticated:
         return redirect('/')
 
-    if request.method == 'POST':
-        chara = Character.objects.get(id=character_id)
-        if not request.user == chara.owner:
-            raise Exception('You do not have access to add items for this username.')
+    chara = Character.objects.get(id=character_id)
+    if not request.user == chara.owner:
+        raise Exception('You do not have access to add items for this username.')
 
-        item = Item.objects.get(id=item_id)
-        if not item.character == chara:
-            raise Exception('You do not have access to this item.')
+    item = Item.objects.get(id=item_id)
+    if not item.character == chara:
+        raise Exception('You do not have access to this item.')
 
-        item = Item.objects.get(id=item_id)
-        item.delete()
-        item.save()
+    item = Item.objects.get(id=item_id)
+    item.delete()
 
     return redirect('/character/%s' % character_id)
 
