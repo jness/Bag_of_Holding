@@ -37,8 +37,5 @@ class Item(models.Model):
     link = models.URLField(null=True)
     character = models.ForeignKey(Character)
 
-    class Meta:
-        unique_together = ('name', 'character')
-
     def __unicode__(self):
         return self.name
