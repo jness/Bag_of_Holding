@@ -22,17 +22,17 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url "home" %}">Home</a></li>
+            <li class="active"><a href="{% url home %}">Home</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
                 <li>
-                    <a href="{% url "profile" %}">Welcome {{ request.user }}</a>
+                    <a href="{% url profile %}">Welcome {{ request.user }}</a>
                 </li>
-                <li><a href="{% url "mylogout" %}"><small>[ Logout ]</small></a></li>
-                <li><a href="{% url "update_password" %}"><small>[ Change Password ]</small></a></li>
+                <li><a href="{% url mylogout %}"><small>[ Logout ]</small></a></li>
+                <li><a href="{% url update_password %}"><small>[ Change Password ]</small></a></li>
             {% else %}
-                <li><a href="{% url "mylogin" %}">Login</a></li>
+                <li><a href="{% url mylogin %}">Login</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
