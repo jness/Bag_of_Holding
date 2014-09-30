@@ -152,17 +152,16 @@
             $(h).modal('show');
         }
     }
-    
+
     {% for item in items %}
     $('#{{ item.name|slugify }}').on('shown.bs.modal', function (e) {
-        window.location.hash = this.hash;
+        window.location.hash = '{{ item.name|slugity }}';
     });
     {% endfor %}
 
     {% for item in items %}
     $('#{{ item.name|slugify }}').on('hidden.bs.modal', function (e) {
         window.location.hash = '';
-        e.preventDefault(); // no page reload
     });
     {% endfor %}
 
