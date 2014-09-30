@@ -152,6 +152,20 @@
             $(h).modal('show');
         }
     }
+
+    $(function(){
+      $('a').click(function (e) {
+        window.location.hash = this.hash;
+      });
+    });
+
+    modals = document.getElementsByClassName('modal');
+    for (var i = 0; i < modals.length; i++) {
+        $("#" + modals[i].id).on('hidden.bs.modal', function (e) {
+            window.location.hash = null;
+        })
+    }
+
     </script>
 
 
