@@ -155,7 +155,7 @@
 
     {% for item in items %}
     $('#{{ item.name|slugify }}').on('shown.bs.modal', function (e) {
-        window.location.hash = '{{ item.name|slugity }}';
+        window.location.hash = '{{ item.name|slugify }}';
     });
     {% endfor %}
 
