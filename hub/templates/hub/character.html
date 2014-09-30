@@ -161,8 +161,10 @@
 
     {% for item in items %}
     $('#{{ item.name|slugify }}').on('hidden.bs.modal', function (e) {
+        e.preventDefault();
+        var pos = $(window).scrollTop(); // get scroll position
         window.location.hash = '';
-        return false;
+        $(window).scrollTop(pos); // set scroll position back
     });
     {% endfor %}
 
