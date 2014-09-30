@@ -162,6 +162,7 @@
     {% for item in items %}
     $('#{{ item.name|slugify }}').on('hidden.bs.modal', function (e) {
         window.location.hash = '';
+        e.preventDefault(); // no page reload
     });
     {% endfor %}
 
