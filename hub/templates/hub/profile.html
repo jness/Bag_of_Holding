@@ -8,7 +8,29 @@
    </h3>
 
    {% for character in characters %}
-       <p><span class="glyphicon glyphicon-pushpin"></span> <a href="{% url character character.id %}">{{ character.name }}</a></p>
+       <p>
+           <a href="{% url character character.id %}">{{ character.name }}</a>
+           <span data-toggle="modal" data-target="#delete-character-{{ character.name|slugify }}-modal" class="glyphicon glyphicon-trash"></span>
+       </p>
+
+        <div class="modal fade" id="delete-character-{{ character.name|slugify }}-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            <span class="help-block">Are you sure you want to delete {{ character }}</span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <a class="btn btn-danger" href="{% url delete_character character.id %}">Delete Character</a>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
    {% endfor %}
 {% endblock %}
 

@@ -98,6 +98,13 @@ def character(request, character_id):
         readonly=readonly))
 
 
+def delete_character(request, character_id):
+    chara = Character.objects.get(id=character_id)
+    if request.user == chara.owner:
+        chara.delete()
+    return redirect('/profile/')
+
+
 def create_item(request, character_id):
     chara = Character.objects.get(id=character_id)
     if not request.user == chara.owner:

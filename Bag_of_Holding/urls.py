@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^profile/create_character/$', 'hub.views.create_character', name='create_character'),
 
     url(r'^character/(?P<character_id>[0-9]+)/$', 'hub.views.character', name='character'),
+    url(r'^character/(?P<character_id>[0-9]+)/delete/$', 'hub.views.delete_character', name='delete_character'),
     url(r'^character/(?P<character_id>[0-9]+)/new/$', 'hub.views.create_item', name='create_item'),
     url(r'^character/(?P<character_id>[0-9]+)/rename_slot/(?P<slot_id>[0-9]+)/$', 'hub.views.rename_slot', name='rename_slot'),
     url(r'^character/(?P<character_id>[0-9]+)/delete_slot/(?P<slot_id>[0-9]+)/$', 'hub.views.delete_slot', name='delete_slot'),
